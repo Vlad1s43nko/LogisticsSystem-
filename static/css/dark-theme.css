@@ -1,0 +1,436 @@
+/* Dark Theme Styles */
+.body-dark {
+    --text-color: #ecf0f1;
+    --text-muted: #95a5a6;
+    --border-color: #34495e;
+    --card-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: #1a202c;
+}
+
+.body-dark .sidebar {
+    background-color: #2d3748;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.body-dark .main-header {
+    background-color: #2d3748;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.body-dark .header-search {
+    background-color: #1a202c;
+}
+
+.body-dark .header-search input {
+    color: var(--text-color);
+}
+
+.body-dark .card {
+    background-color: #2d3748;
+    box-shadow: var(--card-shadow);
+}
+
+.body-dark .card-header {
+    background-color: #2d3748;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.body-dark .summary-card,
+.body-dark .stat-card,
+.body-dark .stat-card-compact {
+    background-color: #2d3748;
+}
+
+.body-dark .form-control,
+.body-dark .form-select {
+    background-color: #1a202c;
+    border-color: #4a5568;
+    color: var(--text-color);
+}
+
+.body-dark .form-control:focus,
+.body-dark .form-select:focus {
+    background-color: #1a202c;
+    border-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+.body-dark .form-select option {
+    background-color: #1a202c;
+    color: var(--text-color);
+}
+
+.body-dark .truck-card {
+    background-color: #2d3748;
+}
+
+.body-dark .truck-image-container {
+    background-color: #1a202c;
+}
+
+.body-dark .truck-info {
+    color: var(--text-color);
+}
+
+.body-dark .truck-map-placeholder {
+    background-color: #1a202c;
+}
+
+.body-dark .nav-tabs {
+    border-bottom-color: var(--border-color);
+}
+
+.body-dark .nav-tabs .nav-link:not(.active) {
+    color: var(--text-muted);
+}
+
+.body-dark .trip-header:hover {
+    background-color: #364154;
+}
+
+.body-dark .trip-details {
+    background-color: #1a202c;
+}
+
+.body-dark .trip-item {
+    border-bottom-color: var(--border-color);
+}
+
+.body-dark .table {
+    color: var(--text-color);
+}
+
+.body-dark .table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.body-dark .breadcrumb-item + .breadcrumb-item::before {
+    color: var(--text-muted);
+}
+
+.body-dark .breadcrumb-item.active {
+    color: var(--text-muted);
+}
+
+.body-dark .breadcrumb-item a {
+    color: var(--secondary-color);
+}
+
+.body-dark .btn-outline-secondary {
+    color: #cbd5e0;
+    border-color: #4a5568;
+}
+
+.body-dark .btn-outline-secondary:hover {
+    background-color: #4a5568;
+    color: #cbd5e0;
+    border-color: #4a5568;
+}
+
+.body-dark .status-badge.in-trip {
+    background-color: rgba(39, 174, 96, 0.15);
+}
+
+.body-dark .status-badge.available {
+    background-color: rgba(52, 152, 219, 0.15);
+}
+
+.body-dark .status-badge.on-leave {
+    background-color: rgba(243, 156, 18, 0.15);
+}
+
+.body-dark .status-badge.on-park {
+    background-color: rgba(243, 156, 18, 0.15);
+}
+
+.body-dark .status-badge.maintenance {
+    background-color: rgba(231, 76, 60, 0.15);
+}
+
+.body-dark .truck-status.in-trip {
+    background-color: rgba(39, 174, 96, 0.15);
+}
+
+.body-dark .truck-status.on-park {
+    background-color: rgba(243, 156, 18, 0.15);
+}
+
+.body-dark .truck-status.maintenance {
+    background-color: rgba(231, 76, 60, 0.15);
+}
+
+/* Fix for filters section in dark mode */
+.body-dark .filters-section {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: var(--text-color);
+}
+
+/* Fix for filter inputs in dark mode */
+.body-dark .filter-input,
+.body-dark .filter-select {
+    background-color: #1a202c;
+    border-color: #4a5568;
+    color: var(--text-color);
+}
+
+/* Fix for filter labels in dark mode */
+.body-dark .filters-section label {
+    color: var(--text-muted);
+}
+
+/* Fix for placeholder text in dark mode */
+.body-dark .filter-input::placeholder {
+    color: #4a5568;
+}
+
+/* Fix for form-control placeholder text in dark mode */
+.body-dark .form-control::placeholder {
+    color: #cbd5e0 !important; /* Light grey for visibility */
+    opacity: 1;
+}
+
+.body-dark textarea.form-control::placeholder {
+    color: #e2e8f0 !important; /* Even lighter for textareas */
+    opacity: 0.9;
+}
+
+/* Dark mode styles for graph toggle button */
+.body-dark .graph-toggle-btn {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: var(--text-color);
+}
+
+.body-dark .graph-toggle-btn:hover {
+    background-color: #3a4a61;
+}
+
+/* Dark mode fixes for driver list status badges */
+.body-dark .drivers-listing-container .status-badge.in-trip {
+    background-color: rgba(39, 174, 96, 0.15);
+    color: var(--success-color);
+    position: static;
+}
+
+.body-dark .drivers-listing-container .status-badge.available {
+    background-color: rgba(52, 152, 219, 0.15);
+    color: var(--secondary-color);
+    position: static;
+}
+
+.body-dark .drivers-listing-container .status-badge.on-leave {
+    background-color: rgba(243, 156, 18, 0.15);
+    color: var(--warning-color);
+    position: static;
+}
+
+/* Dark mode table styling improvements */
+.body-dark .drivers-listing-container .table tbody tr td:nth-child(4) {
+    background-color: transparent;
+}
+
+/* Dark mode status badge positioning fix */
+.body-dark .status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    position: static !important; /* Force static positioning */
+    float: none !important; /* Prevent floating */
+    margin: 0 !important; /* Reset margins */
+    white-space: nowrap;
+}
+
+/* Dark mode fixes for trucks and trips listing */
+.body-dark .trucks-listing-container .status-badge,
+.body-dark .trips-listing-container .status-badge {
+    position: static !important;
+    float: none !important;
+    margin: 0 !important;
+}
+
+.body-dark .direction-badge i {
+    color: var(--secondary-color);
+}
+
+.body-dark .truck-link {
+    color: var(--secondary-color);
+}
+
+.body-dark .truck-link:hover {
+    color: #5dade2;
+}
+
+.body-dark .trip-dates div:last-child {
+    color: var(--text-muted);
+}
+
+.body-dark .truck-avatar-small {
+    border-color: #4a5568;
+}
+
+/* Dark mode styling for tabs and filters row */
+.body-dark .tabs-and-filters-row {
+    background-color: #2d3748;
+    border-color: #4a5568;
+}
+
+.body-dark .tabs-and-filters-row .col-md-6:first-child {
+    border-right-color: #4a5568;
+}
+
+@media (max-width: 767px) {
+    .body-dark .tabs-and-filters-row .col-md-6:first-child {
+        border-bottom-color: #4a5568;
+    }
+}
+
+/* Dark mode for trips control bar */
+.body-dark .trips-control-bar {
+    background-color: #2d3748;
+    border-color: #4a5568;
+}
+
+/* Dark theme adjustments for trip detail - Compact Layout */
+.body-dark .milestones-section-compact {
+    background-color: #2d3748;
+}
+
+.body-dark .milestones-header h4 {
+    color: var(--text-color);
+}
+
+.body-dark .milestone-item-compact.completed {
+    background-color: rgba(39, 174, 96, 0.15);
+    border: 2px solid var(--success-color);
+}
+
+.body-dark .milestone-item-compact.current {
+    background-color: rgba(243, 156, 18, 0.15);
+    border: 2px solid #f39c12;
+}
+
+.body-dark .milestone-item-compact.pending {
+    background-color: rgba(149, 165, 166, 0.15);
+    border: 2px solid #95a5a6;
+}
+
+.body-dark .milestone-item-compact.completed .milestone-icon-compact {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.body-dark .milestone-item-compact.current .milestone-icon-compact {
+    background-color: #f39c12;
+    color: white;
+}
+
+.body-dark .milestone-item-compact.pending .milestone-icon-compact {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.body-dark .milestone-item-compact.completed .milestone-label-compact {
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+.body-dark .milestone-item-compact.current .milestone-label-compact {
+    color: #f39c12;
+    font-weight: 600;
+}
+
+.body-dark .milestone-item-compact.pending .milestone-label-compact {
+    color: #95a5a6;
+}
+
+.body-dark .milestone-arrow-compact.completed {
+    color: var(--success-color);
+}
+
+.body-dark .milestone-arrow-compact.current {
+    color: #f39c12;
+}
+
+.body-dark .milestone-arrow-compact.pending {
+    color: #95a5a6;
+}
+
+.body-dark .details-row {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.body-dark .detail-cell {
+    border-right-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Dark mode adjustments for driver detail page */
+.body-dark .driver-name-header {
+    border-bottom-color: var(--border-color);
+}
+
+.body-dark .driver-name-header h2 {
+    color: var(--text-color);
+}
+
+.body-dark .info-item {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.body-dark .info-label {
+    color: var(--text-muted);
+}
+
+.body-dark .info-value {
+    color: var(--text-color);
+}
+
+/* Fix for table hover text color in dark mode */
+
+/* Add this to your dark-theme.css file */
+
+.body-dark .table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-color) !important; /* Ensure text stays light */
+}
+
+/* Ensure all text elements in hovered rows stay light */
+.body-dark .table-hover tbody tr:hover td {
+    color: var(--text-color) !important;
+}
+
+/* Maintain link colors on hover */
+.body-dark .table-hover tbody tr:hover .truck-link {
+    color: var(--secondary-color) !important;
+}
+
+/* Maintain status badge colors on hover */
+.body-dark .table-hover tbody tr:hover .status-badge {
+    color: inherit !important; /* Keep the original badge colors */
+}
+
+/* Maintain success/danger text colors on hover */
+.body-dark .table-hover tbody tr:hover .text-success {
+    color: var(--success-color) !important;
+}
+
+.body-dark .table-hover tbody tr:hover .text-danger {
+    color: var(--danger-color) !important;
+}
+
+.body-dark .table-hover tbody tr:hover .text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Maintain icon colors in action buttons on hover */
+.body-dark .table-hover tbody tr:hover .action-buttons .btn {
+    color: inherit;
+}
+
+/* Maintain driver/truck name styling on hover */
+.body-dark .table-hover tbody tr:hover .driver-name,
+.body-dark .table-hover tbody tr:hover .truck-name {
+    color: var(--text-color) !important;
+}

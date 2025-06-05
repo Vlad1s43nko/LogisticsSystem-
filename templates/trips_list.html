@@ -1,0 +1,337 @@
+{% extends "base.html" %}
+
+{% block title %}Trips - Logistics Management System{% endblock %}
+
+{% block trips_active %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Trips</h1>
+</div>
+
+<div id="tripsListRoot"></div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/babel">
+{% raw %}
+// TripsListing Component
+const TripsListingComponent = () => {
+    const { useState, useEffect } = React;
+    
+    // State for active tab
+    const [activeTab, setActiveTab] = useState('completed');
+    
+    // State for trips data
+    const [completedTrips, setCompletedTrips] = useState([]);
+    const [inProgressTrips, setInProgressTrips] = useState([]);
+    
+    // State for search query
+    const [searchQuery, setSearchQuery] = useState('');
+    
+    // State for filters
+    const [directionFilter, setDirectionFilter] = useState('all');
+    const [driverFilter, setDriverFilter] = useState('all');
+    const [truckFilter, setTruckFilter] = useState('all');
+    
+    useEffect(() => {
+        // Collect all trips from trucks
+        const allTrips = [];
+        window.dummyData.trucks.forEach(truck => {
+            if (truck.trips && truck.trips.length > 0) {
+                truck.trips.forEach(trip => {
+                    allTrips.push({
+                        ...trip,
+                        truckId: truck.id,
+                        truckLicense: truck.licensePlate
+                    });
+                });
+            }
+        });
+        
+        // Add current trips from active trucks
+        window.dummyData.trucks.forEach(truck => {
+            if (truck.status === 'In Trip' && truck.currentTrip) {
+                allTrips.push({
+                    id: `CURRENT_${truck.id}`,
+                    direction: truck.currentTrip.direction,
+                    driver: truck.currentDriver,
+                    cargo: truck.currentTrip.cargo,
+                    cost: truck.currentTrip.cost,
+                    truckId: truck.id,
+                    truckLicense: truck.licensePlate,
+                    status: 'In Progress',
+                    startDate: '2025-06-01',
+                    endDate: 'TBD'
+                });
+            }
+        });
+        
+        // Sort trips by date (most recent first)
+        allTrips.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+        
+        setCompletedTrips(allTrips.filter(trip => !trip.status || trip.status !== 'In Progress'));
+        setInProgressTrips(allTrips.filter(trip => trip.status === 'In Progress'));
+    }, []);
+    
+    // Get current trip list based on active tab
+    const getCurrentTripList = () => {
+        return activeTab === 'completed' ? completedTrips : inProgressTrips;
+    };
+    
+    // Apply filters
+    const getFilteredTrips = () => {
+        let trips = getCurrentTripList();
+        
+        // Search filter
+        if (searchQuery) {
+            trips = trips.filter(trip => 
+                trip.direction.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                trip.driver.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                trip.truckLicense.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                trip.cargo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                (trip.client && trip.client.toLowerCase().includes(searchQuery.toLowerCase()))
+            );
+        }
+        
+        // Direction filter
+        if (directionFilter !== 'all') {
+            trips = trips.filter(trip => trip.direction === directionFilter);
+        }
+        
+        // Driver filter
+        if (driverFilter !== 'all') {
+            trips = trips.filter(trip => trip.driver === driverFilter);
+        }
+        
+        // Truck filter
+        if (truckFilter !== 'all') {
+            trips = trips.filter(trip => trip.truckId === truckFilter);
+        }
+        
+        return trips;
+    };
+    
+    const filteredTrips = getFilteredTrips();
+    
+    // Get unique values for filters
+    const allTrips = [...completedTrips, ...inProgressTrips];
+    const uniqueDirections = [...new Set(allTrips.map(trip => trip.direction))];
+    const uniqueDrivers = [...new Set(allTrips.map(trip => trip.driver))];
+    const uniqueTrucks = [...new Set(allTrips.map(trip => trip.truckLicense))];
+    
+    const resetFilters = () => {
+        setSearchQuery('');
+        setDirectionFilter('all');
+        setDriverFilter('all');
+        setTruckFilter('all');
+    };
+    
+    return (
+        <div className="trips-listing-container">
+            {/* Combined Tabs, Search, and Filters Row */}
+            <div className="trips-control-bar mt-4">
+                <div className="row align-items-center">
+                    {/* Tabs */}
+                    <div className="col-xl-3 col-lg-4 col-md-6">
+                        <ul className="nav nav-tabs mb-0 border-0">
+                            <li className="nav-item">
+                                <button 
+                                    className={`nav-link ${activeTab === 'completed' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('completed')}
+                                >
+                                    Completed ({completedTrips.length})
+                                </button>
+                            </li>
+                            <li className="nav-item">
+                                <button 
+                                    className={`nav-link ${activeTab === 'in-progress' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('in-progress')}
+                                >
+                                    In Progress ({inProgressTrips.length})
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    {/* Search */}
+                    <div className="col-xl-2 col-lg-3 col-md-6">
+                        <input 
+                            type="text" 
+                            className="form-control form-control-sm" 
+                            placeholder="Search trips..." 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
+                    
+                    {/* Filters */}
+                    <div className="col-xl-5 col-lg-4 col-md-8">
+                        <div className="row g-2">
+                            <div className="col-3">
+                                <select 
+                                    className="form-select form-select-sm" 
+                                    value={directionFilter}
+                                    onChange={(e) => setDirectionFilter(e.target.value)}
+                                >
+                                    <option value="all">All Directions</option>
+                                    {uniqueDirections.map(direction => (
+                                        <option key={direction} value={direction}>{direction}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="col-3">
+                                <select 
+                                    className="form-select form-select-sm" 
+                                    value={driverFilter}
+                                    onChange={(e) => setDriverFilter(e.target.value)}
+                                >
+                                    <option value="all">All Drivers</option>
+                                    {uniqueDrivers.map(driver => (
+                                        <option key={driver} value={driver}>{driver}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="col-3">
+                                <select 
+                                    className="form-select form-select-sm" 
+                                    value={truckFilter}
+                                    onChange={(e) => setTruckFilter(e.target.value)}
+                                >
+                                    <option value="all">All Trucks</option>
+                                    {uniqueTrucks.map(truck => (
+                                        <option key={truck} value={truck}>{truck}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="col-3">
+                                <button className="btn btn-outline-secondary btn-sm w-100" onClick={resetFilters}>
+                                    <i className="fas fa-undo"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Action Button */}
+                    <div className="col-xl-2 col-lg-1 col-md-4">
+                        <button className="btn btn-primary btn-sm w-100">
+                            <i className="fas fa-plus"></i> Plan New Trip
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            {/* Tab Content */}
+            <div className="tab-content mt-3">
+                <div className="tab-pane active">
+                    <div className="card">
+                        <div className="card-header">
+                            <h5>
+                                {activeTab === 'completed' ? 'Completed Trips' : 'Trips in Progress'}
+                            </h5>
+                        </div>
+                        <div className="card-body">
+                            <div className="table-responsive">
+                                <table className="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th style={{width: '12%'}}>Direction</th>
+                                            <th style={{width: '15%'}}>Driver</th>
+                                            <th style={{width: '12%'}}>Truck</th>
+                                            <th style={{width: '15%'}}>Cargo</th>
+                                            <th style={{width: '12%'}}>Dates</th>
+                                            <th style={{width: '10%'}}>Cost</th>
+                                            {activeTab === 'completed' && <th style={{width: '10%'}}>Profit</th>}
+                                            <th style={{width: activeTab === 'completed' ? '14%' : '24%'}}>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {filteredTrips.length > 0 ? (
+                                            filteredTrips.map(trip => (
+                                                <tr key={trip.id}>
+                                                    <td>
+                                                        <div className="direction-badge">
+                                                            <i className="fas fa-route"></i>
+                                                            {trip.direction}
+                                                        </div>
+                                                    </td>
+                                                    <td>{trip.driver}</td>
+                                                    <td>
+                                                        <a href={`/truck/${trip.truckId}`} className="truck-link">
+                                                            {trip.truckLicense}
+                                                        </a>
+                                                    </td>
+                                                    <td>{trip.cargo}</td>
+                                                    <td>
+                                                        <div className="trip-dates">
+                                                            <div>{trip.startDate}</div>
+                                                            {trip.endDate !== 'TBD' && <div>{trip.endDate}</div>}
+                                                            {trip.endDate === 'TBD' && <div className="text-muted">In Progress</div>}
+                                                        </div>
+                                                    </td>
+                                                    <td>{trip.cost} €</td>
+                                                    {activeTab === 'completed' && (
+                                                        <td>
+                                                            <span className={trip.profit > 0 ? 'text-success' : 'text-danger'}>
+                                                                {trip.profit || '0'} €
+                                                            </span>
+                                                        </td>
+                                                    )}
+                                                    <td>
+                                                        <div className="action-buttons">
+                                                            <a href={`/trip/${trip.id}`} className="btn btn-sm btn-outline-primary" title="View Details">
+                                                                <i className="fas fa-eye"></i>
+                                                            </a>
+                                                            {activeTab === 'in-progress' && (
+                                                                <button className="btn btn-sm btn-outline-warning" title="Track Trip">
+                                                                    <i className="fas fa-map-marker-alt"></i>
+                                                                </button>
+                                                            )}
+                                                            <button className="btn btn-sm btn-outline-secondary" title="Edit">
+                                                                <i className="fas fa-edit"></i>
+                                                            </button>
+                                                            {activeTab === 'completed' && (
+                                                                <button className="btn btn-sm btn-outline-info" title="Generate Report">
+                                                                    <i className="fas fa-file-alt"></i>
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan={activeTab === 'completed' ? '8' : '7'} className="text-center">
+                                                    No trips found matching your criteria.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+try {
+    // Render the TripsListing component
+    ReactDOM.render(
+        <TripsListingComponent />,
+        document.getElementById('tripsListRoot')
+    );
+} catch (error) {
+    console.error("Error rendering TripsListing component:", error);
+    document.getElementById('tripsListRoot').innerHTML = `
+        <div class="alert alert-danger">
+            <h4>Error Loading Trips List</h4>
+            <p>${error.message}</p>
+        </div>
+    `;
+}
+{% endraw %}
+</script>
+{% endblock %}
